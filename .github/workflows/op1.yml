@@ -1,4 +1,4 @@
-name: openwrt-rax3000m-xr30
+name: openwrt-rax3000m-xr30-op1
 
 on:
   repository_dispatch:
