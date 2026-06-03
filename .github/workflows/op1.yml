@@ -7,17 +7,17 @@ on:
       OP_IP:
         description: '静态IP地址'     
         required: false
-        default: '192.168.1.88' 
+        default: '192.168.2.1' 
         type: string
       OP_author:
         description: '定制作者'     
         required: false
-        default: 'keben12345' 
+        default: 'shiyu1314' 
         type: string    
       CUSTOM_PLUGINS:
         description: '自定义插件名称，用空格分隔'
         required: false
-        default: 'luci-theme-bootstrap luci-app-ttyd luci-app-diskman luci-app-ksmbd luci-app-openclash luci-app-passwall'
+        default: 'luci-theme-m3e luci-app-ttyd luci-app-diskman luci-app-momo'
         type: string
 
 env:
@@ -29,14 +29,23 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        device: ["rax3000m-nand", "xr30-nand"]
+        device: ["rax3000m", "rax3000me", "rax3000m-emmc", "rax3000m-nand", "rax3000m-256m-nand", "xr30-emmc", "xr30-nand"]
         source: ["openwrt"]
         include:
+          - device: "rax3000m"
+            config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000m=y"
+          - device: "rax3000me"
+            config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000me=y"
+          - device: "rax3000m-emmc"
+            config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000m-emmc=y"
           - device: "rax3000m-nand"
             config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000m-nand=y"
+          - device: "rax3000m-256m-nand"
+            config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000m-256m-nand=y"
           - device: "xr30-nand"
             config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_xr30-nand=y"
-          
+          - device: "xr30-emmc"
+            config: "CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_xr30-emmc=y"
 
     steps: 
     - name: 检查分支
@@ -110,8 +119,9 @@ jobs:
       run: |
         set -x
         cd $SOURCE_NAME
-        find ./staging_dir/ -name '*' -exec touch {} \; >/dev/null 2>&1
+        #  find ./staging_dir/ -name '*' -exec touch {} \; >/dev/null 2>&1
         ./scripts/feeds update -a
+        ./scripts/feeds install -a
         cd .. 
         [ -e patch ] && cp -rf patch/diy/*.patch $SOURCE_NAME
         [ -e patch ] && cp -rf patch/luci/*.patch $SOURCE_NAME/feeds/luci
