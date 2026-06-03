@@ -105,15 +105,7 @@ jobs:
         esac
         echo "release_tag=$_release_tag" >> $GITHUB_ENV  
         
-    - name: 取回缓存 staging_dir
-      uses: actions/cache@v5
-      with:
-        path: |
-          ${{ matrix.source }}/staging_dir
-        key: ${{ matrix.source }}-toolchain-cache
-        restore-keys: |
-          ${{ matrix.source }}-toolchain-cache
-            
+   
     - name: patch修补
       run: |
         set -x
