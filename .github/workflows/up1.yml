@@ -193,7 +193,7 @@ jobs:
           默认密码：无
 
     - name: 清理Releases
-      uses: dev-drprasad/delete-older-releases@v0.3.5
+      uses: dev-drprasad/delete-older-releases@v0.3.4
       with:
         keep_latest: 1
         delete_tags: true
