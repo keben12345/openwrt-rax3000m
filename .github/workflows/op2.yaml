@@ -1,4 +1,4 @@
-name: openwrt
+name: rax3000m-xr30
 
 permissions:
   contents: write
