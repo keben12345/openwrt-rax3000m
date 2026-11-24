@@ -14,20 +14,20 @@ grep HASH target/linux/generic/kernel-6.12 | awk -F'HASH-' '{print $2}' | awk '{
 git clone -b packages --depth 1 --single-branch https://github.com/shiyu1314/openwrt-feeds package/xd
 git clone -b porxy --depth 1 --single-branch https://github.com/keben12345/openwrt-feeds package/porxy
 
-# OpenClash - 官方固定版本 v0.48.002
-echo "===== Downloading OpenClash v0.48.002 ====="
+# OpenClash - 官方固定版本 v0.47.156
+echo "===== Downloading OpenClash v0.47.156 ====="
 
 rm -rf /tmp/OpenClash
 
 git clone \
-    --branch v0.48.002 \
+    --branch v0.47.156 \
     --depth 1 \
     --single-branch \
     https://github.com/vernesong/OpenClash \
     /tmp/OpenClash
 
 # 检查官方 Commit
-EXPECTED_COMMIT="e553e82"
+EXPECTED_COMMIT="c3a33c1"
 ACTUAL_COMMIT=$(git -C /tmp/OpenClash rev-parse HEAD)
 
 if [ "${ACTUAL_COMMIT:0:7}" != "$EXPECTED_COMMIT" ]; then
@@ -42,7 +42,7 @@ SOURCE_MAKEFILE="/tmp/OpenClash/luci-app-openclash/Makefile"
 
 SOURCE_VERSION=$(sed -n 's/^PKG_VERSION:=//p' "$SOURCE_MAKEFILE" | head -n 1)
 
-if [ "$SOURCE_VERSION" != "0.48.002" ]; then
+if [ "$SOURCE_VERSION" != "0.47.156" ]; then
     echo "ERROR: OpenClash version mismatch!"
     echo "Actual: $SOURCE_VERSION"
     exit 1
@@ -54,7 +54,7 @@ cp -a /tmp/OpenClash/luci-app-openclash package/porxy/
 
 rm -rf /tmp/OpenClash
 
-echo "OpenClash v0.48.002 installed successfully!"
+echo "OpenClash v0.47.156 installed successfully!"
 
 
 rm -rf feeds/luci/applications/{luci-app-dockerman,luci-app-samba4,luci-app-aria2,luci-app-diskman}
